@@ -212,8 +212,9 @@ async def run_command_to_pict(command: str, _ctx: AgentCtx) -> str:
         command: 要执行的Shell命令。
 
     Returns:
-        一个 ``data:image/png;base64,...`` URL，其中包含渲染的
-        命令提示符、命令本身及其输出。
+        str:
+            包含运行结果的图片data，网页需要要使用 ``<img src="...">`` 标签显示。
+            如果要保存为png格式文件，只需将data URL复制到文件中即可。
 
     Example:
         run_command_to_pict("ls -la")
