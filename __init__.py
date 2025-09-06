@@ -12,6 +12,7 @@ from nekro_agent.api.plugin import (
     NekroPlugin,
     SandboxMethodType,
 )
+from nekro_agent.api.schemas import AgentCtx
 from nekro_agent.core import logger
 from nekro_agent.services.plugin.base import ConfigBase, NekroPlugin, SandboxMethodType
 from pydantic import Field
@@ -95,7 +96,6 @@ async def execute_shell_command(_ctx: AgentCtx, command: str) -> str:
         # 使用辅助函数执行命令并生成图片
         image_path = await execute_command_and_generate_image(
             command=command,
-            ctx=_ctx,
             config=config,
             max_timeout=config.COMMAND_TIMEOUT
         )
