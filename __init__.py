@@ -11,7 +11,8 @@ from nekro_agent.api.plugin import (
     ExtraField,
     NekroPlugin,
     SandboxMethodType,
-)from nekro_agent.core import logger
+)
+from nekro_agent.core import logger
 from nekro_agent.services.plugin.base import ConfigBase, NekroPlugin, SandboxMethodType
 from pydantic import Field
 
