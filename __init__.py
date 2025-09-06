@@ -71,7 +71,7 @@ class SecRunConfig(ConfigBase):
 config: SecRunConfig = plugin.get_config(SecRunConfig)
 
 
-@plugin.mount_sandbox_method(SandboxMethodType.AGENT, name="执行Shell命令", description="安全地执行shell命令并将结果以图片形式返回")
+@plugin.mount_sandbox_method(SandboxMethodType.TOOL, name="执行Shell命令", description="安全地执行shell命令并将结果以图片形式返回")
 async def execute_shell_command(_ctx: AgentCtx, command: str) -> str:
     """安全地执行shell命令并将结果以图片形式返回。
 
