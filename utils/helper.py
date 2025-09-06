@@ -26,7 +26,6 @@ async def execute_command_and_generate_image(
 
     Args:
         command: 要执行的shell命令
-        ctx: Agent上下文对象
         config: 插件配置对象
         max_timeout: 命令执行超时时间(秒)
 
@@ -97,13 +96,12 @@ async def execute_command_and_generate_image(
         return await _create_error_image(f"未知错误: {str(e)}")
 
 
-async def send_image(image_path: str, ctx: AgentCtx) -> str:
+async def send_image(image_path: str) -> str:
     """
     发送图片（这里返回图片路径，实际发送由调用方处理）
 
     Args:
         image_path: 图片文件路径
-        ctx: Agent上下文对象
 
     Returns:
         str: 图片文件路径
@@ -114,23 +112,22 @@ async def send_image(image_path: str, ctx: AgentCtx) -> str:
     try:
         if not Path(image_path).exists():
             logger.error(f"图片文件不存在: {image_path}")
-            return await _create_error_image("图片文件不存在", ctx)
+            return await _create_error_image("图片文件不存在")
 
         logger.info(f"准备发送图片: {image_path}")
         return image_path
 
     except Exception as e:
         logger.exception(f"发送图片时发生错误: {e}")
-        return await _create_error_image(f"发送图片失败: {str(e)}", ctx)
+        return await _create_error_image(f"发送图片失败: {str(e)}")
 
 
-async def _create_command_output_image(output_text: str, ctx: AgentCtx) -> str:
+async def _create_command_output_image(output_text: str) -> str:
     """
     创建包含命令输出的图片
 
     Args:
         output_text: 要显示的文本内容
-        ctx: Agent上下文对象
 
     Returns:
         str: 生成的图片文件路径
@@ -205,7 +202,7 @@ async def _create_command_output_image(output_text: str, ctx: AgentCtx) -> str:
             y_offset += line_height
 
         # 保存图片
-        output_path = ctx.fs.shared_path / "command_output.png"
+        output_path = _ctx.fs.shared_path / "command_output.png"
         image.save(output_path, "PNG")
 
         return str(output_path)
@@ -213,7 +210,7 @@ async def _create_command_output_image(output_text: str, ctx: AgentCtx) -> str:
     except Exception as e:
         logger.exception(f"创建图片时发生错误: {e}")
         # 创建简单的错误图片
-        return await _create_simple_error_image(f"图片生成失败: {str(e)}", ctx)
+        return await _create_simple_error_image(f"图片生成失败: {str(e)}")
 
 
 async def _create_error_image(error_message: str) -> str:

@@ -79,7 +79,7 @@ async def execute_shell_command(_ctx: AgentCtx, command: str) -> str:
         command: 要执行的shell命令，例如 "ls -la", "ps aux", "df -h"。
 
     Returns:
-        str: 生成的包含命令执行结果的图片文件路径。执行失败时返回错误图片。
+        str: 生成的包含命令执行结果的图片文件路径。
 
     Raises:
         Exception: 命令执行时发生错误。
@@ -99,17 +99,17 @@ async def execute_shell_command(_ctx: AgentCtx, command: str) -> str:
             config=config,
             max_timeout=config.COMMAND_TIMEOUT
         )
-        
+
         # 返回图片路径
         logger.info(f"已成功执行命令并生成图片: {command}")
         return image_path
-        
+
     except Exception as e:
         logger.exception(f"执行shell命令时发生错误: {e}")
         # 在异常情况下，尝试创建错误图片
         try:
             from .utils.helper import _create_error_image
-            return await _create_error_image(f"执行命令失败: {str(e)}", _ctx)
+            return await _create_error_image(f"执行命令失败: {str(e)}")
         except:
             return "执行命令失败且无法生成错误图片"
 
