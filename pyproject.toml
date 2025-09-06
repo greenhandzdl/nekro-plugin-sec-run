@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nekro-plugin-sec-run"
-version = "1.0.0-dev"
+version = "1.1.0-dev"
 description = "NekroAgent 安全Shell执行插件 - 执行安全的shell命令并返回图片"
 authors = ["greenhandzdl"]
 readme = "README.md"
