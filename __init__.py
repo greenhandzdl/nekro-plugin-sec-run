@@ -203,21 +203,29 @@ def _generate_image_data_url(text: str, font_size: int) -> str:
     description="安全执行Shell命令并将输出（包括提示符）渲染为图片的data URL。",
 )
 async def run_command_to_pict(command: str, _ctx: AgentCtx) -> str:
-    """执行一个Shell命令，并将结果作为PNG图片data URL返回。
+    """
+    执行一个Shell命令，并将结果转换为PNG图片Data URL格式返回。
 
-    该函数根据禁用模式列表验证命令，使用可配置的超时运行命令，
-    并捕获stdout和stderr。
+    该函数旨在安全地执行Shell命令，并将其输出结果转换为PNG图片，以便在网页上显示。为了安全起见，函数会进行以下处理：
 
-    Args:
-        command: 要执行的Shell命令。
+    1.  **超时控制**：使用可配置的超时时间运行命令，防止命令执行时间过长导致资源耗尽。
+    2.  **输出捕获**：捕获命令的标准输出（stdout）和标准错误（stderr），确保所有输出都被记录并转换为图片。
 
-    Returns:
-        str:
-            包含运行结果的图片data，网页需要要使用 ``<img src="...">`` 标签显示。
-            如果要保存为png格式文件，只需将data URL复制到文件中即可。
+    **args:**
 
-    Example:
-        run_command_to_pict("ls -la")
+    *   `command` (str)：要执行的Shell命令。请确保命令的语法正确且不包含任何恶意代码。
+                            你应该 **命令验证**：根据预定义的禁用模式列表，检查输入的命令，防止执行恶意或潜在危险的命令。如果命令被判断为恶意，则不会执行。
+                            **恶意命令包括但不限于：破坏计算机系统完整性的命令、获取敏感信息的命令（如密钥、密码等）、执行不受信任远程文件的命令等。**
+                            特别注意，禁止执行任何可能导致下载或执行不受信任远程文件的命令，以及读取敏感文件的命令（例如`cat ~/.ssh/id_rsa`）。
+
+
+    **returns:**
+
+    *   `str`：包含运行结果的PNG图片Data URL。可以直接在HTML中使用``<img src="...">``标签显示该图片。要将Data URL保存为PNG文件，只需将字符串复制到文件中即可。
+
+    **example:**
+
+    `run_command_to_pict("ls -la")`  将`ls -la`命令的输出结果转换为PNG图片Data URL。
     """
     # The framework seems to be passing arguments positionally, so we swap them.
     command, _ctx = _ctx, command
